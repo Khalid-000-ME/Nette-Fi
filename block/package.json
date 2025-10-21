@@ -1,0 +1,35 @@
+{
+  "name": "sim-u-fi-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for Sim-U-Fi MEV protection platform",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
+    "deploy:base": "hardhat run scripts/deploy.js --network base",
+    "deploy:base-sepolia": "hardhat run scripts/deploy.js --network base-sepolia",
+    "verify:base": "hardhat verify --network base",
+    "verify:base-sepolia": "hardhat verify --network base-sepolia"
+  },
+  "keywords": [
+    "defi",
+    "mev",
+    "ethereum",
+    "base",
+    "smart-contracts",
+    "solidity"
+  ],
+  "author": "Sim-U-Fi Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^4.9.3",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.19.0"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "@pythnetwork/pyth-sdk-solidity": "^4.2.0"
+  }
+}
