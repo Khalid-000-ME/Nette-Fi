@@ -1,4 +1,4 @@
-# Sim-U-Fi - Predictive MEV Protection Platform
+# Sim-U-Fi - Predictive Trade loss and MEV Protection Platform
 
 > *"One trade. Infinite simulations. Zero regrets."*
 
