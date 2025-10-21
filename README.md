@@ -2,7 +2,7 @@
 
 > *"One trade. Infinite simulations. Zero regrets."*
 
-**Built for ETHGlobal Online 2025**
+**Built for ETHOnline 2025**
 
 Sim-U-Fi is a revolutionary DeFi trading platform that uses AI-powered parallel execution simulation to protect users from MEV attacks. Leveraging **Arcology Network**, **Pyth Network**, **Blockscout**, and **ASI:One with MeTTa consensus**, it shows you what will happen **before** you trade, allowing you to make informed decisions about timing, gas prices, and execution strategies.
 
@@ -397,9 +397,9 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🏆 ETHGlobal Online 2025
+## 🏆 ETHOnline 2025
 
-Sim-U-Fi was built for ETHGlobal Online 2025, demonstrating:
+Sim-U-Fi was built for ETHOnline 2025, demonstrating:
 
 - **Innovation**: First predictive MEV protection platform with multi-source analysis
 - **Technical Excellence**: Multi-agent AI system with real-time blockchain integration
