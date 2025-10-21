@@ -1,0 +1,152 @@
+<svg viewBox="0 0 1600 1200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define styles -->
+  <defs>
+    <style>
+      .component-box { fill: #2d3748; stroke: #4a5568; stroke-width: 2; }
+      .text { fill: #e2e8f0; font-family: 'Courier New', monospace; font-size: 14px; }
+      .label { fill: #a0aec0; font-size: 12px; }
+      .arrow { stroke: #718096; stroke-width: 2; fill: none; }
+      .arrow-thick { stroke: #48bb78; stroke-width: 3; fill: none; }
+      .arrow-data { stroke: #4299e1; stroke-width: 2; stroke-dasharray: 5,5; fill: none; }
+      .arrow-head { fill: #718096; }
+      .arrow-head-green { fill: #48bb78; }
+      .arrow-head-blue { fill: #4299e1; }
+      .parallel-box { fill: none; stroke: #ed8936; stroke-width: 2; stroke-dasharray: 10,5; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1600" height="1200" fill="#1a202c"/>
+  
+  <!-- Component boxes at top -->
+  <rect class="component-box" x="50" y="30" width="180" height="80" rx="5"/>
+  <text class="text" x="140" y="75" text-anchor="middle">User/Frontend</text>
+  
+  <rect class="component-box" x="280" y="30" width="180" height="80" rx="5"/>
+  <text class="text" x="370" y="75" text-anchor="middle">Orchestrator/Backend</text>
+  
+  <rect class="component-box" x="510" y="30" width="180" height="80" rx="5"/>
+  <text class="text" x="600" y="75" text-anchor="middle">Arcology</text>
+  <text class="label" x="600" y="95" text-anchor="middle">(Parallel Engine)</text>
+  
+  <rect class="component-box" x="740" y="30" width="180" height="80" rx="5"/>
+  <text class="text" x="830" y="75" text-anchor="middle">ASI Agents</text>
+  
+  <rect class="component-box" x="970" y="30" width="180" height="80" rx="5"/>
+  <text class="text" x="1060" y="75" text-anchor="middle">Blockscout</text>
+  
+  <rect class="component-box" x="1200" y="30" width="180" height="80" rx="5"/>
+  <text class="text" x="1290" y="75" text-anchor="middle">Pyth Oracle</text>
+  
+  <rect class="component-box" x="1430" y="30" width="150" height="80" rx="5"/>
+  <text class="text" x="1505" y="75" text-anchor="middle">Yellow</text>
+  
+  <!-- Vertical lines for components -->
+  <line class="arrow" x1="140" y1="110" x2="140" y2="1150"/>
+  <line class="arrow" x1="370" y1="110" x2="370" y2="1150"/>
+  <line class="arrow" x1="600" y1="110" x2="600" y2="1150"/>
+  <line class="arrow" x1="830" y1="110" x2="830" y2="1150"/>
+  <line class="arrow" x1="1060" y1="110" x2="1060" y2="1150"/>
+  <line class="arrow" x1="1290" y1="110" x2="1290" y2="1150"/>
+  <line class="arrow" x1="1505" y1="110" x2="1505" y2="1150"/>
+  
+  <!-- Flow sequence -->
+  
+  <!-- 1. User initiates trade -->
+  <path class="arrow-thick" d="M 140 140 L 370 140" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="255" y="130" text-anchor="middle">Submit trade params</text>
+  <text class="label" x="255" y="155" text-anchor="middle">(ETH→USDC, 5 ETH, balanced risk)</text>
+  
+  <!-- 2. Orchestrator fetches mempool -->
+  <path class="arrow-data" d="M 370 180 L 1060 180" marker-end="url(#arrowhead-blue)"/>
+  <text class="text" x="715" y="170" text-anchor="middle">Get mempool state</text>
+  
+  <path class="arrow-data" d="M 1060 210 L 370 210" marker-end="url(#arrowhead-blue)"/>
+  <text class="text" x="715" y="200" text-anchor="middle">Return pending txs + MEV bot activity</text>
+  
+  <!-- 3. Get price data -->
+  <path class="arrow-data" d="M 370 250 L 1290 250" marker-end="url(#arrowhead-blue)"/>
+  <text class="text" x="830" y="240" text-anchor="middle">Get ETH/USDC price + volatility</text>
+  
+  <path class="arrow-data" d="M 1290 280 L 370 280" marker-end="url(#arrowhead-blue)"/>
+  <text class="text" x="830" y="270" text-anchor="middle">Return $3,000 ± 0.5% volatility</text>
+  
+  <!-- 4. Trigger parallel simulations -->
+  <rect class="parallel-box" x="480" y="310" width="240" height="280"/>
+  <text class="text" x="600" y="300" text-anchor="middle" fill="#ed8936">PARALLEL EXECUTION ZONE</text>
+  
+  <path class="arrow-thick" d="M 370 330 L 600 330" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="485" y="320" text-anchor="middle">Simulate 100 scenarios</text>
+  
+  <!-- Simulation examples -->
+  <text class="label" x="600" y="360" text-anchor="middle">Sim 1: Block N, 50 gwei</text>
+  <text class="label" x="600" y="385" text-anchor="middle">Sim 2: Block N+1, 50 gwei</text>
+  <text class="label" x="600" y="410" text-anchor="middle">Sim 3: Block N+1, 100 gwei</text>
+  <text class="label" x="600" y="435" text-anchor="middle">Sim 4: Block N+2, 50 gwei</text>
+  <text class="label" x="600" y="460" text-anchor="middle">...</text>
+  <text class="label" x="600" y="485" text-anchor="middle">Sim 100: Block N+5, 150 gwei</text>
+  
+  <text class="label" x="600" y="520" text-anchor="middle" font-weight="bold">Results:</text>
+  <text class="label" x="600" y="545" text-anchor="middle">Block N: -$180 (MEV sandwich)</text>
+  <text class="label" x="600" y="565" text-anchor="middle">Block N+3: +$120 (optimal!)</text>
+  
+  <!-- 5. Return simulation results -->
+  <path class="arrow-thick" d="M 600 600 L 370 600" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="485" y="590" text-anchor="middle">100 simulation outcomes</text>
+  
+  <!-- 6. Send to AI agents for analysis -->
+  <path class="arrow-thick" d="M 370 640 L 830 640" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="600" y="630" text-anchor="middle">Analyze simulation results</text>
+  
+  <!-- 7. AI agent processing (parallel) -->
+  <text class="label" x="830" y="680" text-anchor="middle">MEV Detection Agent:</text>
+  <text class="label" x="830" y="700" text-anchor="middle">"Block N has 3 sandwich bots"</text>
+  
+  <text class="label" x="830" y="730" text-anchor="middle">Timing Agent:</text>
+  <text class="label" x="830" y="750" text-anchor="middle">"Optimal: Block N+3 (36s)"</text>
+  
+  <text class="label" x="830" y="780" text-anchor="middle">Risk Agent:</text>
+  <text class="label" x="830" y="800" text-anchor="middle">"Confidence: 92%"</text>
+  
+  <text class="label" x="830" y="830" text-anchor="middle">Consensus (MeTTa):</text>
+  <text class="label" x="830" y="850" text-anchor="middle">"Execute at Block N+3"</text>
+  
+  <!-- 8. Return AI decision -->
+  <path class="arrow-thick" d="M 830 880 L 370 880" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="600" y="870" text-anchor="middle">Decision: Wait 36s, save $120</text>
+  
+  <!-- 9. Show results to user -->
+  <path class="arrow-thick" d="M 370 920 L 140 920" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="255" y="910" text-anchor="middle">Display predictions + countdown</text>
+  
+  <!-- 10. User confirms -->
+  <path class="arrow-thick" d="M 140 960 L 370 960" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="255" y="950" text-anchor="middle">Approve auto-execute</text>
+  
+  <!-- 11. Queue execution -->
+  <path class="arrow-thick" d="M 370 1000 L 1505 1000" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="937" y="990" text-anchor="middle">Queue tx for Block N+3</text>
+  
+  <!-- 12. Wait period -->
+  <text class="label" x="370" y="1040" text-anchor="start">⏳ Waiting 36 seconds...</text>
+  <text class="label" x="370" y="1060" text-anchor="start">Re-simulating every 12s to adjust if needed</text>
+  
+  <!-- 13. Execute -->
+  <path class="arrow-thick" d="M 1505 1090 L 600 1090" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="1052" y="1080" text-anchor="middle">Execute transaction on-chain</text>
+  
+  <!-- 14. Confirm to user -->
+  <path class="arrow-thick" d="M 600 1130 L 140 1130" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="370" y="1120" text-anchor="middle">✅ Trade complete!</text>
+  <text class="label" x="370" y="1145" text-anchor="middle">Predicted: $15,120 | Actual: $15,117 | Saved: $118</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon class="arrow-head-green" points="0 0, 10 3, 0 6" />
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon class="arrow-head-blue" points="0 0, 10 3, 0 6" />
+    </marker>
+  </defs>
+</svg>

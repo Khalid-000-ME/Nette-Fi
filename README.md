@@ -16,6 +16,21 @@ Sim-U-Fi is a revolutionary DeFi trading platform that uses AI-powered parallel 
 - **⚡ Real-time Execution**: Get comprehensive analysis in under 10 seconds
 - **🎯 Smart Timing**: Know exactly when to execute for maximum profit and minimum MEV exposure
 
+## 🔄 Complete System Flow
+
+The diagram below shows the complete end-to-end flow of how Sim-U-Fi protects users from MEV attacks using parallel simulations and AI consensus:
+
+![Sim-U-Fi System Flow](./flow/flow.svg)
+
+### Flow Breakdown:
+1. **User Input**: Submit trade parameters (token pair, amount, risk preference)
+2. **Data Gathering**: Fetch real-time mempool state from Blockscout and price data from Pyth
+3. **Parallel Simulation**: Arcology Network runs 100+ scenarios across different blocks and gas prices
+4. **AI Analysis**: Multiple specialized agents analyze results using ASI:One reasoning
+5. **Consensus Decision**: MeTTa consensus engine determines optimal execution strategy
+6. **User Confirmation**: Display predictions with countdown timer
+7. **Smart Execution**: Queue transaction for optimal timing with continuous re-evaluation
+
 ## 🏗️ Architecture
 
 ```
