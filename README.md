@@ -1,6 +1,5 @@
-{{ ... }}
-
-> *"One trade. Infinite simulations. Zero regrets."*
+ZeroMEV
+> *"MEV Protection is no more an option"*
 
 **Built for ETHOnline 2025**
 
