@@ -36,7 +36,7 @@ The system features a **root_agent.py** that interfaces directly with users thro
 
 ## Internal execution of Batched Payrolls
 
-![Payroll processing](./flow/flow.png)
+![Payroll processing](./flow/flow.svg)
 
 ## 🔄 User Flow & System Architecture
 
