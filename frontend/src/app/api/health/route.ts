@@ -7,11 +7,16 @@ export async function GET() {
     
     let mettaStatus = 'unknown';
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+      
       const response = await fetch(`${mettaUrl}/health`, { 
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        signal: AbortSignal.timeout(5000) // 5 second timeout
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
       mettaStatus = response.ok ? 'healthy' : 'unhealthy';
     } catch (error) {
       mettaStatus = 'unreachable';
