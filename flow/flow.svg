@@ -1,152 +1,159 @@
-<svg viewBox="0 0 1600 1200" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1600 1400" xmlns="http://www.w3.org/2000/svg">
   <!-- Define styles -->
   <defs>
     <style>
       .component-box { fill: #2d3748; stroke: #4a5568; stroke-width: 2; }
-      .text { fill: #e2e8f0; font-family: 'Courier New', monospace; font-size: 14px; }
-      .label { fill: #a0aec0; font-size: 12px; }
+      .asi-box { fill: #4c1d95; stroke: #7c3aed; stroke-width: 2; }
+      .text { fill: #e2e8f0; font-family: 'Excalifont', sans-serif; font-size: 14px; }
+      .label { fill: #a0aec0; font-family: 'Excalifont', sans-serif; font-size: 12px; }
       .arrow { stroke: #718096; stroke-width: 2; fill: none; }
       .arrow-thick { stroke: #48bb78; stroke-width: 3; fill: none; }
       .arrow-data { stroke: #4299e1; stroke-width: 2; stroke-dasharray: 5,5; fill: none; }
+      .arrow-asi { stroke: #7c3aed; stroke-width: 3; fill: none; }
       .arrow-head { fill: #718096; }
       .arrow-head-green { fill: #48bb78; }
       .arrow-head-blue { fill: #4299e1; }
+      .arrow-head-purple { fill: #7c3aed; }
       .parallel-box { fill: none; stroke: #ed8936; stroke-width: 2; stroke-dasharray: 10,5; }
+      .netting-box { fill: #2a4365; stroke: #3182ce; stroke-width: 2; }
+      .savings-text { fill: #68d391; font-family: 'Excalifont', sans-serif; font-weight: bold; }
+      .payroll-text { fill: #fbbf24; font-family: 'Excalifont', sans-serif; font-weight: bold; }
     </style>
-  </defs>
-  
-  <!-- Background -->
-  <rect width="1600" height="1200" fill="#1a202c"/>
-  
-  <!-- Component boxes at top -->
-  <rect class="component-box" x="50" y="30" width="180" height="80" rx="5"/>
-  <text class="text" x="140" y="75" text-anchor="middle">User/Frontend</text>
-  
-  <rect class="component-box" x="280" y="30" width="180" height="80" rx="5"/>
-  <text class="text" x="370" y="75" text-anchor="middle">Orchestrator/Backend</text>
-  
-  <rect class="component-box" x="510" y="30" width="180" height="80" rx="5"/>
-  <text class="text" x="600" y="75" text-anchor="middle">Arcology</text>
-  <text class="label" x="600" y="95" text-anchor="middle">(Parallel Engine)</text>
-  
-  <rect class="component-box" x="740" y="30" width="180" height="80" rx="5"/>
-  <text class="text" x="830" y="75" text-anchor="middle">ASI Agents</text>
-  
-  <rect class="component-box" x="970" y="30" width="180" height="80" rx="5"/>
-  <text class="text" x="1060" y="75" text-anchor="middle">Blockscout</text>
-  
-  <rect class="component-box" x="1200" y="30" width="180" height="80" rx="5"/>
-  <text class="text" x="1290" y="75" text-anchor="middle">Pyth Oracle</text>
-  
-  <rect class="component-box" x="1430" y="30" width="150" height="80" rx="5"/>
-  <text class="text" x="1505" y="75" text-anchor="middle">Yellow</text>
-  
-  <!-- Vertical lines for components -->
-  <line class="arrow" x1="140" y1="110" x2="140" y2="1150"/>
-  <line class="arrow" x1="370" y1="110" x2="370" y2="1150"/>
-  <line class="arrow" x1="600" y1="110" x2="600" y2="1150"/>
-  <line class="arrow" x1="830" y1="110" x2="830" y2="1150"/>
-  <line class="arrow" x1="1060" y1="110" x2="1060" y2="1150"/>
-  <line class="arrow" x1="1290" y1="110" x2="1290" y2="1150"/>
-  <line class="arrow" x1="1505" y1="110" x2="1505" y2="1150"/>
-  
-  <!-- Flow sequence -->
-  
-  <!-- 1. User initiates trade -->
-  <path class="arrow-thick" d="M 140 140 L 370 140" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="255" y="130" text-anchor="middle">Submit trade params</text>
-  <text class="label" x="255" y="155" text-anchor="middle">(ETH→USDC, 5 ETH, balanced risk)</text>
-  
-  <!-- 2. Orchestrator fetches mempool -->
-  <path class="arrow-data" d="M 370 180 L 1060 180" marker-end="url(#arrowhead-blue)"/>
-  <text class="text" x="715" y="170" text-anchor="middle">Get mempool state</text>
-  
-  <path class="arrow-data" d="M 1060 210 L 370 210" marker-end="url(#arrowhead-blue)"/>
-  <text class="text" x="715" y="200" text-anchor="middle">Return pending txs + MEV bot activity</text>
-  
-  <!-- 3. Get price data -->
-  <path class="arrow-data" d="M 370 250 L 1290 250" marker-end="url(#arrowhead-blue)"/>
-  <text class="text" x="830" y="240" text-anchor="middle">Get ETH/USDC price + volatility</text>
-  
-  <path class="arrow-data" d="M 1290 280 L 370 280" marker-end="url(#arrowhead-blue)"/>
-  <text class="text" x="830" y="270" text-anchor="middle">Return $3,000 ± 0.5% volatility</text>
-  
-  <!-- 4. Trigger parallel simulations -->
-  <rect class="parallel-box" x="480" y="310" width="240" height="280"/>
-  <text class="text" x="600" y="300" text-anchor="middle" fill="#ed8936">PARALLEL EXECUTION ZONE</text>
-  
-  <path class="arrow-thick" d="M 370 330 L 600 330" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="485" y="320" text-anchor="middle">Simulate 100 scenarios</text>
-  
-  <!-- Simulation examples -->
-  <text class="label" x="600" y="360" text-anchor="middle">Sim 1: Block N, 50 gwei</text>
-  <text class="label" x="600" y="385" text-anchor="middle">Sim 2: Block N+1, 50 gwei</text>
-  <text class="label" x="600" y="410" text-anchor="middle">Sim 3: Block N+1, 100 gwei</text>
-  <text class="label" x="600" y="435" text-anchor="middle">Sim 4: Block N+2, 50 gwei</text>
-  <text class="label" x="600" y="460" text-anchor="middle">...</text>
-  <text class="label" x="600" y="485" text-anchor="middle">Sim 100: Block N+5, 150 gwei</text>
-  
-  <text class="label" x="600" y="520" text-anchor="middle" font-weight="bold">Results:</text>
-  <text class="label" x="600" y="545" text-anchor="middle">Block N: -$180 (MEV sandwich)</text>
-  <text class="label" x="600" y="565" text-anchor="middle">Block N+3: +$120 (optimal!)</text>
-  
-  <!-- 5. Return simulation results -->
-  <path class="arrow-thick" d="M 600 600 L 370 600" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="485" y="590" text-anchor="middle">100 simulation outcomes</text>
-  
-  <!-- 6. Send to AI agents for analysis -->
-  <path class="arrow-thick" d="M 370 640 L 830 640" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="600" y="630" text-anchor="middle">Analyze simulation results</text>
-  
-  <!-- 7. AI agent processing (parallel) -->
-  <text class="label" x="830" y="680" text-anchor="middle">MEV Detection Agent:</text>
-  <text class="label" x="830" y="700" text-anchor="middle">"Block N has 3 sandwich bots"</text>
-  
-  <text class="label" x="830" y="730" text-anchor="middle">Timing Agent:</text>
-  <text class="label" x="830" y="750" text-anchor="middle">"Optimal: Block N+3 (36s)"</text>
-  
-  <text class="label" x="830" y="780" text-anchor="middle">Risk Agent:</text>
-  <text class="label" x="830" y="800" text-anchor="middle">"Confidence: 92%"</text>
-  
-  <text class="label" x="830" y="830" text-anchor="middle">Consensus (MeTTa):</text>
-  <text class="label" x="830" y="850" text-anchor="middle">"Execute at Block N+3"</text>
-  
-  <!-- 8. Return AI decision -->
-  <path class="arrow-thick" d="M 830 880 L 370 880" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="600" y="870" text-anchor="middle">Decision: Wait 36s, save $120</text>
-  
-  <!-- 9. Show results to user -->
-  <path class="arrow-thick" d="M 370 920 L 140 920" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="255" y="910" text-anchor="middle">Display predictions + countdown</text>
-  
-  <!-- 10. User confirms -->
-  <path class="arrow-thick" d="M 140 960 L 370 960" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="255" y="950" text-anchor="middle">Approve auto-execute</text>
-  
-  <!-- 11. Queue execution -->
-  <path class="arrow-thick" d="M 370 1000 L 1505 1000" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="937" y="990" text-anchor="middle">Queue tx for Block N+3</text>
-  
-  <!-- 12. Wait period -->
-  <text class="label" x="370" y="1040" text-anchor="start">⏳ Waiting 36 seconds...</text>
-  <text class="label" x="370" y="1060" text-anchor="start">Re-simulating every 12s to adjust if needed</text>
-  
-  <!-- 13. Execute -->
-  <path class="arrow-thick" d="M 1505 1090 L 600 1090" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="1052" y="1080" text-anchor="middle">Execute transaction on-chain</text>
-  
-  <!-- 14. Confirm to user -->
-  <path class="arrow-thick" d="M 600 1130 L 140 1130" marker-end="url(#arrowhead-green)"/>
-  <text class="text" x="370" y="1120" text-anchor="middle">✅ Trade complete!</text>
-  <text class="label" x="370" y="1145" text-anchor="middle">Predicted: $15,120 | Actual: $15,117 | Saved: $118</text>
-  
-  <!-- Arrow markers -->
-  <defs>
+    
+    <!-- Arrow markers -->
     <marker id="arrowhead-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
       <polygon class="arrow-head-green" points="0 0, 10 3, 0 6" />
     </marker>
     <marker id="arrowhead-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
       <polygon class="arrow-head-blue" points="0 0, 10 3, 0 6" />
     </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon class="arrow-head-purple" points="0 0, 10 3, 0 6" />
+    </marker>
   </defs>
+  
+  <!-- Background -->
+  <rect width="1600" height="1400" fill="#1a202c"/>
+  
+  <!-- Component boxes at top -->
+  <rect class="component-box" x="50" y="30" width="200" height="80" rx="5"/>
+  <text class="text" x="150" y="65" text-anchor="middle">User Frontend</text>
+  <text class="label" x="150" y="85" text-anchor="middle">(Payroll Interface)</text>
+  
+  <rect class="asi-box" x="300" y="30" width="200" height="80" rx="5"/>
+  <text class="text" x="400" y="65" text-anchor="middle">ASI Agents</text>
+  <text class="label" x="400" y="85" text-anchor="middle">(Main Interface)</text>
+  
+  <rect class="component-box" x="550" y="30" width="200" height="80" rx="5"/>
+  <text class="text" x="650" y="65" text-anchor="middle">Backend API</text>
+  <text class="label" x="650" y="85" text-anchor="middle">(Processing Layer)</text>
+  
+  <rect class="component-box" x="800" y="30" width="250" height="80" rx="5"/>
+  <text class="text" x="925" y="65" text-anchor="middle">NettedSwapPayroll.sol</text>
+  <text class="label" x="925" y="85" text-anchor="middle">(Smart Contract)</text>
+  
+  <rect class="component-box" x="1100" y="30" width="200" height="80" rx="5"/>
+  <text class="text" x="1200" y="65" text-anchor="middle">Arcology DevNet</text>
+  <text class="label" x="1200" y="85" text-anchor="middle">(Parallel Execution)</text>
+  
+  <rect class="component-box" x="1350" y="30" width="200" height="80" rx="5"/>
+  <text class="text" x="1450" y="65" text-anchor="middle">Multiprocess</text>
+  <text class="label" x="1450" y="85" text-anchor="middle">(100 Processors)</text>
+  
+  <!-- Vertical lines for components -->
+  <line class="arrow" x1="150" y1="110" x2="150" y2="1350"/>
+  <line class="arrow" x1="400" y1="110" x2="400" y2="1350"/>
+  <line class="arrow" x1="650" y1="110" x2="650" y2="1350"/>
+  <line class="arrow" x1="925" y1="110" x2="925" y2="1350"/>
+  <line class="arrow" x1="1200" y1="110" x2="1200" y2="1350"/>
+  <line class="arrow" x1="1450" y1="110" x2="1450" y2="1350"/>
+  
+  <!-- Flow sequence -->
+  
+  <!-- 1. User submits payroll batch -->
+  <path class="arrow-thick" d="M 150 150 L 400 150" marker-end="url(#arrowhead-green)"/>
+  <text class="payroll-text" x="275" y="140" text-anchor="middle">Submit Payroll Batch</text>
+  <text class="label" x="275" y="165" text-anchor="middle">Employee payments in different tokens</text>
+  
+  <!-- 2. ASI processes and validates -->
+  <path class="arrow-asi" d="M 400 200 L 650 200" marker-end="url(#arrowhead-purple)"/>
+  <text class="text" x="525" y="190" text-anchor="middle">ASI Agent Processing</text>
+  <text class="label" x="525" y="215" text-anchor="middle">Validate transactions and optimize</text>
+  
+  <!-- 3. Backend receives batch -->
+  <path class="arrow-thick" d="M 650 250 L 925 250" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="787" y="240" text-anchor="middle">Send to Smart Contract</text>
+  <text class="label" x="787" y="265" text-anchor="middle">Batch: ETH to USDC, ETH to DAI, USDC to ETH</text>
+  
+  <!-- 4. Arcology parallel processing -->
+  <rect class="parallel-box" x="1100" y="300" width="450" height="200"/>
+  <text class="text" x="1325" y="290" text-anchor="middle" fill="#ed8936">ARCOLOGY PARALLEL EXECUTION</text>
+  
+  <path class="arrow-thick" d="M 925 320 L 1200 320" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="1062" y="310" text-anchor="middle">Trigger Multiprocess</text>
+  <text class="label" x="1062" y="335" text-anchor="middle">100 concurrent processors</text>
+  
+  <!-- Multiprocess execution -->
+  <path class="arrow-thick" d="M 1200 360 L 1450 360" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="1325" y="350" text-anchor="middle">Processor 1: Alice ETH to USDC</text>
+  
+  <path class="arrow-thick" d="M 1200 390 L 1450 390" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="1325" y="380" text-anchor="middle">Processor 2: Bob ETH to DAI</text>
+  
+  <path class="arrow-thick" d="M 1200 420 L 1450 420" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="1325" y="410" text-anchor="middle">Processor 3: Carol USDC to ETH</text>
+  
+  <path class="arrow-thick" d="M 1200 450 L 1450 450" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="1325" y="440" text-anchor="middle">Processors 4-100: Thread-safe</text>
+  
+  <!-- Netting optimization box -->
+  <rect class="netting-box" x="800" y="520" width="450" height="140"/>
+  <text class="text" x="1025" y="545" text-anchor="middle" fill="#3182ce">NETTING OPTIMIZATION</text>
+  <text class="label" x="1025" y="570" text-anchor="middle">Opposite trades detected:</text>
+  <text class="label" x="1025" y="590" text-anchor="middle">Alice ETH to USDC vs Carol USDC to ETH</text>
+  <text class="label" x="1025" y="610" text-anchor="middle">Netted internally - No pool interaction</text>
+  <text class="label" x="1025" y="630" text-anchor="middle">Bob ETH to DAI - Executed via Uniswap pool</text>
+  <text class="savings-text" x="1025" y="650" text-anchor="middle">Gas saved: 50,000 per netted pair</text>
+  
+  <!-- 5. Transactions mined on chain -->
+  <rect class="netting-box" x="1100" y="700" width="450" height="100"/>
+  <text class="text" x="1325" y="725" text-anchor="middle" fill="#3182ce">TRANSACTIONS MINED ON DEVNET</text>
+  <text class="label" x="1325" y="750" text-anchor="middle">Block confirmed with payroll transactions</text>
+  <text class="label" x="1325" y="770" text-anchor="middle">Events emitted from smart contract</text>
+  
+  <!-- 6. Chain events flow back -->
+  <path class="arrow-data" d="M 1200 820 L 925 820" marker-end="url(#arrowhead-blue)"/>
+  <text class="text" x="1062" y="810" text-anchor="middle">Chain Events</text>
+  <text class="label" x="1062" y="835" text-anchor="middle">Gas saved, netting details, swap results</text>
+  
+  <path class="arrow-data" d="M 925 870 L 650 870" marker-end="url(#arrowhead-blue)"/>
+  <text class="text" x="787" y="860" text-anchor="middle">Process Event Data</text>
+  <text class="label" x="787" y="885" text-anchor="middle">Extract analytics and metrics</text>
+  
+  <!-- 7. ASI processes results -->
+  <path class="arrow-asi" d="M 650 920 L 400 920" marker-end="url(#arrowhead-purple)"/>
+  <text class="text" x="525" y="910" text-anchor="middle">ASI Analytics Processing</text>
+  <text class="label" x="525" y="935" text-anchor="middle">Calculate savings, efficiency metrics</text>
+  
+  <!-- 8. Results sent to frontend -->
+  <path class="arrow-thick" d="M 400 970 L 150 970" marker-end="url(#arrowhead-green)"/>
+  <text class="text" x="275" y="960" text-anchor="middle">Send Results to User</text>
+  <text class="label" x="275" y="985" text-anchor="middle">Payroll complete with analytics</text>
+  
+  <!-- 9. Final payroll results -->
+  <rect class="netting-box" x="50" y="1020" width="700" height="160"/>
+  <text class="text" x="400" y="1045" text-anchor="middle" fill="#68d391">PAYROLL EXECUTION COMPLETE</text>
+  <text class="payroll-text" x="400" y="1070" text-anchor="middle">All employees paid in their preferred tokens</text>
+  <text class="label" x="400" y="1095" text-anchor="middle">Alice: Received USDC (netted with Carol)</text>
+  <text class="label" x="400" y="1115" text-anchor="middle">Bob: Received DAI (swapped via Uniswap pool)</text>
+  <text class="label" x="400" y="1135" text-anchor="middle">Carol: Received ETH (netted with Alice)</text>
+  <text class="savings-text" x="400" y="1160" text-anchor="middle">Gas Savings: 67% | MEV Protection: 100%</text>
+  
+  <!-- 10. System benefits summary -->
+  <rect class="netting-box" x="800" y="1200" width="750" height="120"/>
+  <text class="text" x="1175" y="1225" text-anchor="middle" fill="#68d391">SYSTEM BENEFITS ACHIEVED</text>
+  <text class="label" x="1175" y="1250" text-anchor="middle">100 Parallel Processors | Thread-Safe Execution | Netting Optimization</text>
+  <text class="label" x="1175" y="1270" text-anchor="middle">Cross-Token Payroll | ASI Agent Interface | Real-time Analytics</text>
+  <text class="savings-text" x="1175" y="1295" text-anchor="middle">Revolutionary DeFi Payroll System</text>
+
 </svg>
