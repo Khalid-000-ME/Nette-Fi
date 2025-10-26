@@ -34,6 +34,10 @@ The system features a **root_agent.py** that interfaces directly with users thro
 - **Real-Time Analytics**: Live price feeds, mempool monitoring, and network status
 - **Comprehensive Dashboard**: Multiple frontend pages with analytics and transaction management
 
+## Internal execution of Batched Payrolls
+
+![Payroll processing](./flow/flow.png)
+
 ## 🔄 User Flow & System Architecture
 
 ![User Flow](./flow/user_flow.png)
