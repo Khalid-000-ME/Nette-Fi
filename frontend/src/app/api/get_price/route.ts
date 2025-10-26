@@ -23,6 +23,19 @@ interface PythPriceData {
   };
 }
 
+// DevNet token contracts for reference (popular volatile tokens added for demo)
+const TOKEN_ADDRESSES = {
+  USDC: "0x22C3D0cC5CAb74855B991F1Fb7defc8BaC93ca7C",
+  WETH: "0x9C7FA77904AB82F0649ca0B73507b6042AAB76Fb", 
+  DAI: "0x79fb9184DEECCb8bbd2b835B82dc6D67B8aEe185",
+  USDT: "0x1a176D63a9250Ab6fAE00E3C0d2D1CEdBB313f6C",
+  MATIC: "0x6BE7656dc44F9cBC55942DEED70c200b5a5185C7",
+  // Popular volatile tokens for comprehensive price feeds
+  SOL: "0x747e0f49813fac6D48f2B4A7c41534B7f8E147c0", // Solana - highly volatile
+  AVAX: "0x510C531eb6f4C4ebC2FBf30EaA7B53B24A1548F2", // Avalanche - popular L1
+  LINK: "0x8660b77CDaF11e330c8b48FE198A87b8dE6C4B13"  // Chainlink - DeFi oracle leader
+};
+
 // Pyth price feed IDs for major tokens
 const PYTH_PRICE_IDS: { [key: string]: string } = {
   'ETH': '0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace',
@@ -30,7 +43,13 @@ const PYTH_PRICE_IDS: { [key: string]: string } = {
   'USDC': '0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a',
   'USDT': '0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b',
   'WETH': '0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace', // Same as ETH
-  'DAI': '0xb0948a5e5313200c632b51bb5ca32f6de0d36e9950a942d19751e833f70dabfd'
+  'DAI': '0xb0948a5e5313200c632b51bb5ca32f6de0d36e9950a942d19751e833f70dabfd',
+  // Popular volatile tokens with high trading volume
+  'SOL': '0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d', // Solana - Layer 1 blockchain
+  'AVAX': '0x93da3352f9f1d105fdfe4971cfa80e9dd777bfc5d0f683ebb6e1294b92137bb7', // Avalanche - DeFi ecosystem
+  'LINK': '0x8ac0c70fff57e9aefdf5edf44b51d62c2d433653cbb2cf5cc06bb115af04d221'  // Chainlink - Oracle network
+  // Note: MATIC price feed temporarily disabled - Pyth Network support unclear
+  // 'MATIC': 'TBD' // Will use mock data until correct feed ID is confirmed
 };
 
 // Pyth Hermes API endpoints
@@ -105,6 +124,8 @@ async function fetchPythPrice(token: string, chain: string): Promise<any> {
     
   } catch (error) {
     console.error(`❌ Failed to fetch Pyth price for ${token}:`, error);
+    console.error(`   Price Feed ID: ${priceId}`);
+    console.error(`   Endpoint: ${endpoint}`);
     throw error;
   }
 }
@@ -158,7 +179,21 @@ async function fetchHistoricalPrices(token: string, chain: string): Promise<numb
 
 export async function POST(request: NextRequest) {
   try {
-    const { token, vs_currency, chain, useRealData = true }: PriceRequest = await request.json();
+    let token, vs_currency, chain, useRealData = true;
+    
+    try {
+      const body = await request.json();
+      token = body.token || 'ETH';
+      vs_currency = body.vs_currency || 'usd';
+      chain = body.chain || 'base';
+      useRealData = body.useRealData !== undefined ? body.useRealData : true;
+    } catch (jsonError) {
+      // Handle malformed JSON - use defaults
+      token = 'ETH';
+      vs_currency = 'usd';
+      chain = 'base';
+      useRealData = false;
+    }
     
     console.log(`📊 Price request: ${token}/${vs_currency} on ${chain} (real data: ${useRealData})`);
     
@@ -175,7 +210,10 @@ export async function POST(request: NextRequest) {
         historicalPrices = await fetchHistoricalPrices(token, chain);
         
       } catch (error) {
-        console.warn(`⚠️ Falling back to mock data due to Pyth error:`, error);
+        console.warn(`⚠️ Falling back to mock data for ${token} due to Pyth error:`, error);
+        if (token.toUpperCase() === 'MATIC') {
+          console.warn(`   MATIC might not be supported by Pyth Network or feed ID is incorrect`);
+        }
         usingRealData = false;
       }
     }
@@ -190,7 +228,12 @@ export async function POST(request: NextRequest) {
         'USDC': 1.00,
         'USDT': 0.999,
         'DAI': 1.001,
-        'BTC': 65000.00
+        'BTC': 65000.00,
+        'MATIC': 0.4235, // Realistic MATIC price - using mock data (Pyth feed TBD)
+        // Popular volatile tokens with realistic market prices
+        'SOL': 145.67,   // Solana - highly volatile L1 blockchain
+        'AVAX': 28.43,   // Avalanche - popular DeFi ecosystem
+        'LINK': 14.89    // Chainlink - leading oracle network
       };
       
       const basePrice = mockPrices[token.toUpperCase()] || 1.0;
@@ -232,7 +275,7 @@ export async function POST(request: NextRequest) {
       last_updated: new Date(priceData.publishTime * 1000).toISOString(),
       publish_time: priceData.publishTime,
       price_feed_id: priceData.priceId,
-      source: usingRealData ? "pyth_network" : "mock_data",
+      source: usingRealData ? "pyth_network" : (token.toUpperCase() === 'MATIC' ? "mock_data_matic_pending" : "mock_data"),
       chain: chain
     };
     
