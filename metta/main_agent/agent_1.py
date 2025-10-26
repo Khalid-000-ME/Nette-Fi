@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Agent 1: ASI:One Tool Calling Agent
-Uses ASI:One LLM with tool calling to interact with frontend APIs
+Agent 1: ASI:One Tool Calling Agent with Chat Protocol
+Uses ASI:One LLM with tool calling and communicates via ASI's Chat Protocol
 """
 
 import os
@@ -9,9 +9,21 @@ import json
 import requests
 from typing import Dict, Any, List, Optional
 from dotenv import load_dotenv
+from datetime import datetime
+from uuid import uuid4
+from uagents import Agent, Protocol, Context
+import asyncio
 
 # Load environment variables
 load_dotenv()
+
+# Import the necessary components from the chat protocol
+from uagents_core.contrib.protocols.chat import (
+    ChatAcknowledgement,
+    ChatMessage,
+    TextContent,
+    chat_protocol_spec,
+)
 
 # Import our tools
 from tool_1 import approve_batch_transactions, APPROVE_TOOL_SCHEMA
@@ -21,6 +33,20 @@ from tool_user import get_user_details, USER_TOOL_SCHEMA
 from tool_upload_csv import process_payroll_csv, CSV_UPLOAD_TOOL_SCHEMA
 from tool_payroll import process_safe_payroll, PAYROLL_TOOL_SCHEMA
 from tool_netted_amm import get_netted_amm_status, NETTED_AMM_TOOL_SCHEMA
+
+# Initialize Agent 1
+agent_1 = Agent(
+    name="agent_1",
+    port=8004,
+    seed="agent_1_seed_456",
+    endpoint=["http://localhost:8004/submit"]
+)
+
+# Store Root Agent's address (will be updated when Root Agent starts)
+root_agent_address = "agent1qwfj3xm0g7606gtrqkq4yzf9gatemty6vlhrfagq7fafpznh5udqk3xy90j"
+
+# Initialize the chat protocol
+chat_proto = Protocol(spec=chat_protocol_spec)
 
 # ASI:One API configuration
 ASI_API_KEY = os.getenv("ASI_API_KEY")
@@ -365,6 +391,176 @@ IMPORTANT:
         }
         print("🔄 Session cleared")
     
+    def process_json_request(self, json_request: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Process JSON request from Root Agent and return structured response
+        """
+        try:
+            message = json_request.get("message", "")
+            request_type = json_request.get("request_type", "general")
+            context = json_request.get("context", {})
+            
+            print(f"🤖 Agent 1: Processing JSON request type: {request_type}")
+            print(f"   Message: {message}")
+            
+            # Store wallet signature if provided
+            if json_request.get("wallet_signature"):
+                self.session["wallet_signature"] = json_request["wallet_signature"]
+                self.session["user_authenticated"] = True
+                print(f"   Stored wallet signature from request")
+            
+            # Process based on request type
+            if request_type == "execute_transactions":
+                return self._handle_transaction_request(message, context)
+            elif request_type == "get_prices":
+                return self._handle_price_request(message, context)
+            elif request_type == "get_balances":
+                return self._handle_balance_request(message, context)
+            elif request_type == "wallet_signature":
+                return self._handle_wallet_signature_request(message, context)
+            else:
+                # Use ASI:One for general processing
+                response = self.chat(message)
+                return {
+                    "success": True,
+                    "message": response,
+                    "data": {"response": response},
+                    "tool": "ASI:One Agent",
+                    "request_type": request_type
+                }
+                
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"Error processing request: {str(e)}",
+                "data": {"error": str(e)},
+                "tool": "Agent 1",
+                "request_type": request_type
+            }
+    
+    def _handle_transaction_request(self, message: str, context: Dict) -> Dict[str, Any]:
+        """Handle transaction execution requests"""
+        try:
+            # Use approve_batch_transactions tool
+            result = approve_batch_transactions(
+                analysis_id="root_agent_request",
+                simulation_id=1,
+                batch_size=1,
+                wallet_signature=self.session.get("wallet_signature"),
+                custom_transactions=message
+            )
+            
+            return {
+                "success": result.get("success", False),
+                "message": "Transaction execution completed",
+                "data": result,
+                "tool": "Transaction Executor",
+                "request_type": "execute_transactions"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"Transaction execution failed: {str(e)}",
+                "data": {"error": str(e)},
+                "tool": "Transaction Executor",
+                "request_type": "execute_transactions"
+            }
+    
+    def _handle_price_request(self, message: str, context: Dict) -> Dict[str, Any]:
+        """Handle price data requests"""
+        try:
+            # Extract tokens from message or use defaults
+            tokens = ["ETH", "USDC", "MATIC"]  # Default tokens
+            
+            # Try to extract specific tokens from message
+            import re
+            token_matches = re.findall(r'\b[A-Z]{3,5}\b', message.upper())
+            if token_matches:
+                tokens = token_matches[:5]  # Limit to 5 tokens
+            
+            prices = {}
+            for token in tokens:
+                try:
+                    result = get_live_price(token=token)
+                    if result.get("success"):
+                        prices[token] = result.get("data", {})
+                except:
+                    continue
+            
+            return {
+                "success": True,
+                "message": f"Price data retrieved for {len(prices)} tokens",
+                "data": {"prices": prices},
+                "tool": "Price Feed",
+                "request_type": "get_prices"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"Price retrieval failed: {str(e)}",
+                "data": {"error": str(e)},
+                "tool": "Price Feed",
+                "request_type": "get_prices"
+            }
+    
+    def _handle_balance_request(self, message: str, context: Dict) -> Dict[str, Any]:
+        """Handle balance check requests"""
+        try:
+            result = get_user_balances(
+                wallet_signature=self.session.get("wallet_signature")
+            )
+            
+            return {
+                "success": result.get("success", False),
+                "message": "Balance data retrieved successfully",
+                "data": result,
+                "tool": "Balance Checker",
+                "request_type": "get_balances"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"Balance check failed: {str(e)}",
+                "data": {"error": str(e)},
+                "tool": "Balance Checker",
+                "request_type": "get_balances"
+            }
+    
+    def _handle_wallet_signature_request(self, message: str, context: Dict) -> Dict[str, Any]:
+        """Handle wallet signature submission"""
+        try:
+            # Extract signature from message
+            import re
+            signature_match = re.search(r'0x[a-fA-F0-9]{64}', message)
+            
+            if signature_match:
+                signature = signature_match.group(0)
+                result = self.set_wallet_signature(signature)
+                
+                return {
+                    "success": result.get("success", False),
+                    "message": result.get("message", "Wallet signature processed"),
+                    "data": result,
+                    "tool": "Wallet Manager",
+                    "request_type": "wallet_signature"
+                }
+            else:
+                return {
+                    "success": False,
+                    "message": "No valid wallet signature found in message",
+                    "data": {"error": "Invalid signature format"},
+                    "tool": "Wallet Manager",
+                    "request_type": "wallet_signature"
+                }
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"Wallet signature processing failed: {str(e)}",
+                "data": {"error": str(e)},
+                "tool": "Wallet Manager",
+                "request_type": "wallet_signature"
+            }
+    
     def _execute_tool_call_with_session(self, tool_call: Dict) -> Dict:
         """Execute tool call with session context"""
         function_name = tool_call["function"]["name"]
@@ -465,6 +661,184 @@ IMPORTANT:
             print(f"   ❌ Tool execution error: {e}")
             return error_result
 
+# Global agent instance
+global_agent = None
+
+@agent_1.on_event("startup")
+async def agent_1_startup_handler(ctx: Context):
+    global global_agent
+    ctx.logger.info(f"🤖 Agent 1: My name is {ctx.agent.name} and my address is {ctx.agent.address}")
+    print(f"🤖 Agent 1: Starting up! My address is {ctx.agent.address}")
+    print(f"🤖 Agent 1: Will receive requests from Root Agent at {root_agent_address}")
+    print(f"🤖 Agent 1: Ready to process tool calls and transactions")
+    
+    # Initialize global agent instance
+    try:
+        global_agent = ASIOneAgent()
+        print(f"🤖 Agent 1: ✅ ASI:One agent initialized successfully")
+    except Exception as e:
+        print(f"🤖 Agent 1: ⚠️ ASI:One agent initialization failed: {e}")
+        print(f"🤖 Agent 1: Will operate in tool-only mode")
+        global_agent = None
+
+@chat_proto.on_message(ChatMessage)
+async def agent_1_handle_message(ctx: Context, sender: str, msg: ChatMessage):
+    """Handle JSON requests from Root Agent"""
+    for item in msg.content:
+        if isinstance(item, TextContent):
+            ctx.logger.info(f"🤖 Agent 1: Received message from {sender}: {item.text}")
+            
+            try:
+                # Parse JSON request from Root Agent
+                json_request = json.loads(item.text)
+                print(f"🤖 Agent 1: 📊 Processing JSON request from Root Agent")
+                print(f"   Request Type: {json_request.get('request_type', 'unknown')}")
+                
+                # Process the request
+                if global_agent:
+                    response_data = global_agent.process_json_request(json_request)
+                else:
+                    # Fallback processing without ASI:One
+                    response_data = process_request_fallback(json_request)
+                
+                # Send JSON response back to Root Agent
+                response_message = ChatMessage(
+                    timestamp=datetime.utcnow(),
+                    msg_id=uuid4(),
+                    content=[TextContent(type="text", text=json.dumps(response_data))]
+                )
+                
+                await ctx.send(sender, response_message)
+                print(f"🤖 Agent 1: 📤 Sent JSON response to Root Agent")
+                print(f"   Success: {response_data.get('success', False)}")
+                print(f"   Tool: {response_data.get('tool', 'Unknown')}")
+                
+                # Send acknowledgment
+                ack = ChatAcknowledgement(
+                    timestamp=datetime.utcnow(),
+                    acknowledged_msg_id=msg.msg_id
+                )
+                await ctx.send(sender, ack)
+                print(f"🤖 Agent 1: ✅ Sent acknowledgment to Root Agent")
+                
+            except json.JSONDecodeError:
+                # Handle non-JSON messages
+                print(f"🤖 Agent 1: Root Agent said: '{item.text}'")
+                
+                # Send simple response
+                response = ChatMessage(
+                    timestamp=datetime.utcnow(),
+                    msg_id=uuid4(),
+                    content=[TextContent(type="text", text="Message received, but expected JSON format for processing.")]
+                )
+                await ctx.send(sender, response)
+                
+                # Send acknowledgment
+                ack = ChatAcknowledgement(
+                    timestamp=datetime.utcnow(),
+                    acknowledged_msg_id=msg.msg_id
+                )
+                await ctx.send(sender, ack)
+            
+            except Exception as e:
+                print(f"🤖 Agent 1: ❌ Error processing request: {e}")
+                
+                # Send error response
+                error_response = {
+                    "success": False,
+                    "message": f"Error processing request: {str(e)}",
+                    "data": {"error": str(e)},
+                    "tool": "Agent 1",
+                    "request_type": "error"
+                }
+                
+                response_message = ChatMessage(
+                    timestamp=datetime.utcnow(),
+                    msg_id=uuid4(),
+                    content=[TextContent(type="text", text=json.dumps(error_response))]
+                )
+                
+                await ctx.send(sender, response_message)
+                
+                # Send acknowledgment
+                ack = ChatAcknowledgement(
+                    timestamp=datetime.utcnow(),
+                    acknowledged_msg_id=msg.msg_id
+                )
+                await ctx.send(sender, ack)
+
+@chat_proto.on_message(ChatAcknowledgement)
+async def agent_1_handle_acknowledgement(ctx: Context, sender: str, msg: ChatAcknowledgement):
+    ctx.logger.info(f"🤖 Agent 1: Received acknowledgement from {sender} for message: {msg.acknowledged_msg_id}")
+    print(f"🤖 Agent 1: ✅ Root Agent acknowledged my message {msg.acknowledged_msg_id}")
+
+def process_request_fallback(json_request: Dict[str, Any]) -> Dict[str, Any]:
+    """Fallback processing when ASI:One is not available"""
+    request_type = json_request.get("request_type", "general")
+    message = json_request.get("message", "")
+    
+    print(f"🤖 Agent 1: Using fallback processing for {request_type}")
+    
+    try:
+        if request_type == "execute_transactions":
+            # Direct tool call
+            result = approve_batch_transactions(
+                analysis_id="fallback_request",
+                simulation_id=1,
+                batch_size=1,
+                custom_transactions=message
+            )
+            return {
+                "success": result.get("success", False),
+                "message": "Transaction executed via fallback",
+                "data": result,
+                "tool": "Fallback Transaction Executor",
+                "request_type": request_type
+            }
+        
+        elif request_type == "get_prices":
+            # Direct tool call for prices
+            result = get_live_price(token="ETH")  # Default to ETH
+            return {
+                "success": result.get("success", False),
+                "message": "Price data retrieved via fallback",
+                "data": result,
+                "tool": "Fallback Price Feed",
+                "request_type": request_type
+            }
+        
+        elif request_type == "get_balances":
+            # Direct tool call for balances
+            result = get_user_balances()
+            return {
+                "success": result.get("success", False),
+                "message": "Balance data retrieved via fallback",
+                "data": result,
+                "tool": "Fallback Balance Checker",
+                "request_type": request_type
+            }
+        
+        else:
+            return {
+                "success": True,
+                "message": f"Fallback: Received {request_type} request",
+                "data": {"message": message, "processed_by": "fallback"},
+                "tool": "Fallback Processor",
+                "request_type": request_type
+            }
+    
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Fallback processing failed: {str(e)}",
+            "data": {"error": str(e)},
+            "tool": "Fallback Processor",
+            "request_type": request_type
+        }
+
+# Include the protocol in the agent
+agent_1.include(chat_proto, publish_manifest=True)
+
 def main():
     """Interactive chat loop"""
     print("🚀 ASI:One Tool Calling Agent")
@@ -552,4 +926,31 @@ def main():
         print(f"\n❌ Fatal error: {e}")
 
 if __name__ == "__main__":
-    main()
+    print("🤖 Starting Agent 1 with ASI Chat Protocol & Tool Calling")
+    print("=" * 70)
+    print("Features:")
+    print("✅ ASI Chat Protocol communication with Root Agent")
+    print("✅ JSON request/response format processing")
+    print("✅ ASI:One LLM reasoning with tool calling")
+    print("✅ Direct tool execution fallback mode")
+    print("✅ Transaction execution, price feeds, balance checking")
+    print("✅ Session management and wallet signature handling")
+    print()
+    print("Agent Communication:")
+    print(f"• Agent 1: http://localhost:8004/submit")
+    print(f"• Root Agent Address: {root_agent_address}")
+    print()
+    print("Supported Request Types:")
+    print("• execute_transactions - Execute blockchain transactions")
+    print("• get_prices - Retrieve cryptocurrency prices")
+    print("• get_balances - Check wallet token balances")
+    print("• wallet_signature - Process wallet authentication")
+    print("• general - ASI:One powered general processing")
+    print()
+    
+    try:
+        agent_1.run()
+    except KeyboardInterrupt:
+        print("\n👋 Agent 1 shutting down!")
+    except Exception as e:
+        print(f"\n❌ Fatal error: {e}")
