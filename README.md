@@ -1,79 +1,174 @@
-# ZeroMEV - Netted AMM Protocol
-> *"100 Parallel Trades. One Netted Execution. Zero MEV."*
+# Netted Swap Payroll - Multi-Agent DeFi Payroll System
+> *"ASI:One Powered. MeTTa Reasoning. Arcology Parallel Execution. Zero MEV Risk."*
 
 **Built for ETHOnline 2025**
 
-ZeroMEV is a revolutionary DeFi protocol that uses **Arcology Network's parallel execution** to collect trades simultaneously, net opposing flows internally, and execute only the net amount on liquidity pools. This eliminates MEV attacks at the protocol level while providing massive gas savings.
+Netted Swap Payroll is a revolutionary enterprise payroll solution that leverages **NettedSwapPayroll.sol** smart contract with **Arcology Network's parallel execution** and **netting optimization** to process employee payments with zero MEV risk. Our sophisticated multi-agent system powered by **ASI:One Chat Protocol** and **MeTTa knowledge graphs** provides intelligent analysis, optimal timing, and comprehensive risk management.
 
-Leveraging **Arcology Network's concurrent execution**, **Pyth Network**, and **Blockscout**, ZeroMEV makes MEV attacks impossible by processing trades in batches where individual trades are invisible to MEV bots.
+The system features a **root_agent.py** that interfaces directly with users through a chat interface, orchestrating a network of specialized agents using **ASI's Chat Protocol** and **MeTTa consensus reasoning** for optimal payroll execution.
+
+**Sponsor Technologies**: **ASI:One** (autonomous agent communication), **MeTTa** (knowledge graphs & consensus), **Arcology Network** (parallel execution & netting), **Pyth Network** (price feeds), and **Blockscout** (transaction monitoring).
 
 ## 🌟 Key Features
 
-- **🔄 Parallel Trade Collection**: Collect 100+ trades simultaneously using **Arcology Network's concurrent execution** (impossible on Ethereum)
-- **🧮 Internal Netting**: Match opposing trades internally before hitting liquidity pools, eliminating price impact
-- **🛡️ MEV Elimination**: Batch processing makes individual trades invisible to MEV bots - no sandwich attacks possible
-- **⚡ 90% Gas Savings**: Matched trades use simple transfers (21k gas) instead of expensive pool swaps (150k gas)
-- **📊 Real-time Price Feeds**: Fair pricing for all trades using **Pyth Network** oracles
-- **🔗 Deferred Execution**: Trades collected during block, processed as batch at block end
-- **📈 Visual Netting**: See how your trade gets matched internally vs. sent to pools
-- **🎯 Zero Price Impact**: Internal matching eliminates slippage for matched portions
+### 🤖 Multi-Agent Architecture
+- **root_agent.py**: Primary user interface with chat protocol and comprehensive tool access
+- **Orchestrator Agent**: Coordinates specialized agents using ASI's Chat Protocol
+- **MEV Agent**: Real-time MEV risk assessment and protection strategies
+- **Fast TX Agent**: Transaction execution timing optimization
+- **Profit Agent**: Cost optimization and arbitrage detection
+- **Shared MeTTa Knowledge**: Common knowledge base for consensus-based decisions without debates
 
-## 🔄 Complete System Flow
+### 🏢 DeFi Payroll Management
+- **CSV Upload & Processing**: Upload employee payment details via ASI agent chat interface
+- **Netted Transaction Layer**: Arcology's parallel execution for batch payment optimization
+- **Zero MEV Risk**: Complete MEV protection through intelligent batching and timing
+- **70% Gas Savings**: Reduce costs through MeTTa-optimized transaction netting
+- **Automated Invoicing**: Generate professional PDF invoices with blockchain verification
+- **Scheduled Payments**: AI-powered scheduling with optimal market timing
 
-The diagram below shows how ZeroMEV uses Arcology's parallel execution to eliminate MEV through trade netting:
+### 🔧 Technical Innovation
+- **NettedSwapPayroll.sol**: Smart contract utilizing NettedAMM libraries for parallel payroll processing
+- **Arcology Parallel Execution**: 100 concurrent processors with thread-safe execution
+- **Multi-Token Support**: ETH, USDC, USDT, DAI, and major DeFi tokens
+- **Real-Time Analytics**: Live price feeds, mempool monitoring, and network status
+- **Comprehensive Dashboard**: Multiple frontend pages with analytics and transaction management
 
-![ZeroMEV Netted AMM Flow](./flow/flow.svg)
+## 🔄 User Flow & System Architecture
 
-### Flow Breakdown:
-1. **Parallel Collection**: Multiple users submit trades simultaneously using Arcology's concurrent execution
-2. **Thread-Safe Storage**: Trades stored in concurrent data structures (HashU256Map, SwapRequestStore)
-3. **Batch Aggregation**: All trades collected during block execution phase
-4. **Netting Calculation**: Opposing flows matched internally (Buy: 18 ETH, Sell: 5 ETH → Net: 13 ETH)
-5. **Internal Matching**: Matched portions executed as direct transfers (90% gas savings)
-6. **Pool Execution**: Only net amount sent to liquidity pools (minimal price impact)
-7. **Fair Distribution**: All users get fair prices, zero MEV extraction possible
+![User Flow](./flow/user_flow.png)
 
-## 🏗️ Architecture
+## 💼 Netted Swap Payroll Flow
+
+The system processes employee payments through an intelligent ASI agent interface with netted transaction optimization:
+
+### Payroll Processing Flow:
+1. **User Interaction**: User interacts with **root_agent.py** through chat interface
+2. **Agent Orchestration**: root_agent coordinates with orchestrator using ASI's Chat Protocol
+3. **Multi-Agent Analysis**: Orchestrator engages MEV, Fast TX, and Profit agents for consensus
+4. **MeTTa Consensus**: Shared knowledge base enables unified decision-making without debates
+5. **Smart Contract Execution**: **NettedSwapPayroll.sol** processes payments using NettedAMM libraries
+6. **Parallel Processing**: Arcology's 100 concurrent processors execute with netting optimization
+7. **Results & Analytics**: Real-time feedback through dashboard and chat interface
+
+### Multi-Agent System Components:
+
+#### **root_agent.py** - Primary Interface
+- **get_prices tool**: Real-time price data aggregation
+- **transaction_execution tool**: Direct blockchain interaction
+- **get_mempool_data tool**: MEV risk assessment
+- **user_info tool**: Account management and history
+- **get_user_balances tool**: Portfolio tracking
+- **ASI Chat Protocol**: Communication with orchestrator
+
+#### **Orchestrator Agent** - Coordination Hub
+- **ASI's Chat Protocol**: Manages communication between specialized agents
+- **MeTTa Consensus Tool**: Solves consensus based on agent decisions
+- **Agent Coordination**: Orchestrates MEV, Fast TX, and Profit agents
+
+#### **Specialized Agents**
+- **MEV Agent**: Real-time MEV risk assessment and protection strategies
+- **Fast TX Agent**: Transaction execution timing optimization
+- **Profit Agent**: Cost optimization and arbitrage detection
+- **Shared MeTTa Knowledge**: Common knowledge base for unified decision-making
+
+## 🏗️ Multi-Agent System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    FRONTEND (Next.js)                   │
-│  • Trading Interface  • Netting Visualization           │
-│  • Real-time Updates  • Gas Savings Display             │
+│  • Chat Interface     • Payroll Dashboard              │
+│  • Scheduled Txs      • Price Feeds                    │
+│  • Simple Analysis    • Market News                    │
+│  • Multiple Pages     • Real-time Analytics            │
 └────────────────┬────────────────────────────────────────┘
-                 ↓
+                 ↓ User Interaction
 ┌─────────────────────────────────────────────────────────┐
-│              ARCOLOGY NETTED AMM CONTRACT               │
-│                                                         │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
-│  │   Thread 1  │  │   Thread 2  │  │   Thread N  │     │
-│  │ queueSwap() │  │ queueSwap() │  │ queueSwap() │     │
-│  │   (Alice)   │  │   (Bob)     │  │   (Carol)   │     │
-│  └─────────────┘  └─────────────┘  └─────────────┘     │
-│                        ↓                               │
+│                   root_agent.py                         │
+│  • Primary User Interface                              │
+│  • get_prices tool                                     │
+│  • transaction_execution tool                          │
+│  • get_mempool_data tool                               │
+│  • user_info tool                                      │
+│  • get_user_balances tool                              │
+│  • ASI's Chat Protocol Implementation                   │
+└────────────────┬────────────────────────────────────────┘
+                 ↓ ASI's Chat Protocol
+┌─────────────────────────────────────────────────────────┐
+│                 ORCHESTRATOR AGENT                      │
 │  ┌─────────────────────────────────────────────────┐   │
-│  │         CONCURRENT DATA STRUCTURES              │   │
-│  │  • HashU256Map (aggregated amounts)            │   │
-│  │  • SwapRequestStore (individual requests)      │   │
-│  │  • Thread-safe operations                      │   │
+│  │            SPECIALIZED AGENTS                   │   │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ │   │
+│  │  │   MEV       │ │  Fast TX    │ │   Profit    │ │   │
+│  │  │   Agent     │ │   Agent     │ │   Agent     │ │   │
+│  │  │Risk Assess  │ │Timing Opt   │ │Cost Opt     │ │   │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘ │   │
 │  └─────────────────────────────────────────────────┘   │
 │                        ↓                               │
 │  ┌─────────────────────────────────────────────────┐   │
-│  │           DEFERRED EXECUTION                    │   │
-│  │  Runtime.defer() → netAndExecuteSwaps()        │   │
-│  │  • Internal matching (21k gas)                 │   │
-│  │  • Pool execution (net amount only)            │   │
+│  │           SHARED METTA KNOWLEDGE                │   │
+│  │  • Common Knowledge Base                        │   │
+│  │  • Consensus-Based Decisions                    │   │
+│  │  • No Debates Between Agents                    │   │
+│  │  • MeTTa Consensus Tool                         │   │
 │  └─────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────┘
                          ↓
 ┌─────────────────────────────────────────────────────────┐
-│                 EXTERNAL SERVICES                       │
-│  • Arcology Network (Parallel Execution Engine)        │
-│  • Pyth Oracle (Real-time Price Feeds)                 │
-│  • Uniswap V3 Pools (Net Amount Execution)             │
-│  • Blockscout (Historical MEV Analysis)                │
+│              NETTEDSWAPPAYROLL.SOL                      │
+│  • Utilizes NettedAMM Libraries                        │
+│  • Parallel Payroll Processing                         │
+│  • Netting Optimization                                │
+│  • 100 Concurrent Processors                           │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│            ARCOLOGY PARALLEL EXECUTION                  │
+│  • Thread-Safe Environment                             │
+│  • Multiprocess Processing                             │
+│  • Concurrent Variables                                │
+│  • Netting & Swapping in Parallel                      │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│                 SPONSOR INTEGRATIONS                    │
+│  • ASI:One (Chat Protocol & Agent Communication)       │
+│  • MeTTa (Knowledge Graphs & Consensus Reasoning)      │
+│  • Arcology Network (Parallel Execution & Netting)     │
+│  • Pyth Network (Real-time Price Oracles)              │
+│  • Blockscout (Transaction Monitoring & Analytics)     │
 └─────────────────────────────────────────────────────────┘
 ```
+
+## 🧠 Sponsor Technology Integration
+
+### ASI:One (Fetch.ai)
+- **Chat Protocol**: ASI's Chat Protocol implemented between root_agent.py and orchestrator
+- **Agent Communication**: Standardized inter-agent communication protocol
+- **Multi-Agent Coordination**: Orchestrator manages MEV, Fast TX, and Profit agents
+- **Real-time Messaging**: Asynchronous communication for optimal payroll execution
+
+### MeTTa (SingularityNET)
+- **Shared Knowledge Base**: Common MeTTa knowledge shared among all agents
+- **Consensus Reasoning**: MeTTa tool solves consensus based on agent decisions
+- **No Debates**: Unified decision-making without inter-agent conflicts
+- **Knowledge Graphs**: Structured relationships for optimal payroll strategies
+
+### Arcology Network
+- **NettedSwapPayroll.sol**: Smart contract utilizing NettedAMM libraries for payroll processing
+- **Parallel Execution**: 100 concurrent processors with thread-safe execution environment
+- **Multiprocess Processing**: Concurrent variables and thread-safe data structures
+- **Netting Optimization**: Internal transaction matching to minimize gas costs and MEV risk
+
+### Pyth Network
+- **Real-time Price Feeds**: High-frequency price data for optimal timing
+- **Multi-source Aggregation**: Combined price feeds for accuracy
+- **Volatility Analysis**: Market condition assessment for risk management
+
+### Blockscout
+- **Transaction Monitoring**: Real-time blockchain analytics
+- **Performance Metrics**: Network health and transaction success tracking
+- **Historical Data**: Transaction history and pattern analysis
 
 ## 🚀 Quick Start
 
@@ -270,55 +365,55 @@ Calculate optimal netting for a batch of trades.
 }
 ```
 
-## 🧮 Netted AMM System
+## 🧮 NettedSwapPayroll System
 
-ZeroMEV uses Arcology Network's parallel execution to implement a revolutionary Netted AMM that eliminates MEV at the protocol level:
+The system uses **NettedSwapPayroll.sol** smart contract with Arcology Network's parallel execution to implement revolutionary payroll processing that eliminates MEV at the protocol level:
 
-### 1. Parallel Trade Collection
-- **Mechanism**: Concurrent `queueSwap()` calls using Arcology's thread-safe containers
-- **Data Structures**: `HashU256Map` for aggregation, `SwapRequestStore` for individual trades
-- **Benefit**: Impossible on Ethereum - trades collected simultaneously, not sequentially
+### 1. Parallel Payroll Collection
+- **Mechanism**: Concurrent `submitPayrollSwap()` calls using Arcology's thread-safe containers
+- **Data Structures**: `U256Cumulative` for counters, concurrent arrays for employee tracking
+- **Benefit**: 100 concurrent processors handle payroll transactions simultaneously
 
 ### 2. Internal Netting Algorithm
-- **Process**: Match opposing trades internally before pool interaction
-- **Calculation**: `netAmount = |totalBuy - totalSell|`, `matchedAmount = min(totalBuy, totalSell)`
-- **Result**: 90% gas savings for matched portions (21k vs 150k gas)
+- **Process**: Match opposing payroll swaps internally (ETH→USDC vs USDC→ETH)
+- **Calculation**: `netAmount = |totalETH_USDC - totalUSDC_ETH|`
+- **Result**: 50,000+ gas savings per netted pair, zero MEV exposure
 
-### 3. Deferred Execution Pattern
-- **Trigger**: `Runtime.defer()` processes batch at block end
-- **Timing**: Trades collected during block, executed atomically
-- **MEV Protection**: Individual trades invisible to bots during collection phase
+### 3. Multiprocess Execution Pattern
+- **Trigger**: `processBatchPayrollSwaps()` with 100 parallel processors
+- **Timing**: Payroll transactions processed atomically in isolated execution units
+- **MEV Protection**: Individual payroll swaps invisible during batch processing
 
-### 4. Fair Price Distribution
-- **Internal Matching**: Direct transfers at fair market price
-- **Pool Execution**: Net amount only, minimal price impact
-- **Guarantee**: All users get same fair price, zero MEV extraction
+### 4. Cross-Token Payroll Distribution
+- **Internal Matching**: Direct employee payments at fair market price
+- **Pool Execution**: Remaining swaps executed via Uniswap V3 pools
+- **Guarantee**: All employees receive preferred tokens with optimal pricing
 
 ## 🛡️ Protocol-Level MEV Elimination
 
-### How Netting Eliminates MEV
-- **Batch Processing**: Individual trades invisible during collection phase
-- **Internal Matching**: Opposing trades matched directly, never hit pools
-- **Atomic Execution**: Entire batch processed in single transaction
-- **Zero Attack Surface**: No individual trade timing for bots to exploit
+### How Netting Eliminates MEV in Payroll
+- **Batch Processing**: Individual payroll swaps invisible during collection phase
+- **Internal Matching**: Opposing payroll directions matched directly, never hit pools
+- **Atomic Execution**: Entire payroll batch processed in single transaction
+- **Zero Attack Surface**: No individual payroll timing for MEV bots to exploit
 
 ### Technical Implementation
-- **Concurrent Collection**: `Multiprocess(20)` enables parallel trade submission
+- **Concurrent Collection**: `Multiprocess(100)` enables parallel payroll submission
 - **Thread-Safe Storage**: Arcology's concurrent containers prevent race conditions
-- **Deferred Processing**: `Runtime.isInDeferred()` triggers batch execution
-- **Gas Optimization**: Matched trades use simple transfers (21k gas)
+- **Batch Processing**: `processBatchPayrollSwaps()` triggers parallel execution
+- **Gas Optimization**: Netted payrolls use direct transfers (minimal gas)
 
 ### Mathematical Guarantees
-- **Price Impact Reduction**: `priceImpact = f(netAmount)` vs `f(totalVolume)`
-- **Gas Savings**: `savings = (matchedAmount / totalAmount) * 85%`
-- **MEV Elimination**: `mevRisk = 0` when `individualTradesVisible = false`
-- **Fair Pricing**: All users get `poolPrice` at execution time
+- **Price Impact Reduction**: `priceImpact = f(netAmount)` vs `f(totalPayrollVolume)`
+- **Gas Savings**: `savings = (nettedAmount / totalAmount) * 67%`
+- **MEV Elimination**: `mevRisk = 0` when `individualPayrollsVisible = false`
+- **Fair Pricing**: All employees get `marketPrice` at execution time
 
-### Real-World Benefits
-- **Example**: 100 ETH buy + 80 ETH sell = 20 ETH net (80% matched internally)
-- **Gas Savings**: 80% of trades use 21k gas instead of 150k gas
-- **MEV Protection**: Bots see single 20 ETH trade, not 100 individual trades
-- **Price Stability**: 5x less price impact than traditional execution
+### Real-World Payroll Benefits
+- **Example**: 10 ETH→USDC payrolls + 8 USDC→ETH payrolls = 2 ETH net (80% matched internally)
+- **Gas Savings**: 80% of payrolls use minimal gas instead of full swap gas
+- **MEV Protection**: Bots see single 2 ETH swap, not 18 individual payroll transactions
+- **Cost Efficiency**: 5x less gas cost than traditional payroll execution
 
 ## 🎨 UI/UX Features
 
@@ -328,28 +423,29 @@ ZeroMEV uses Arcology Network's parallel execution to implement a revolutionary 
 - **Responsive**: Mobile-first design with desktop optimization
 - **Dark Mode**: Full dark mode support
 
-### Netted Trading Interface
-- **Intuitive Controls**: Simple token selection and amount input with netting preview
-- **Real-time Netting**: Live visualization of current batch state and matching probability
-- **Gas Savings Display**: Real-time calculation of estimated gas savings
-- **Batch Status**: Visual progress of trade collection and execution phases
-- **MEV Protection Stats**: Live counter of MEV attacks prevented and savings generated
+### Payroll Management Interface
+- **Chat Interface**: Direct interaction with root_agent.py for payroll management
+- **Multiple Dashboard Pages**: Payroll dashboard, scheduled transactions, price feeds, simple analysis, market news
+- **Real-time Netting**: Live visualization of payroll batch state and matching probability
+- **Gas Savings Display**: Real-time calculation of estimated payroll gas savings
+- **Batch Status**: Visual progress of payroll collection and execution phases
+- **MEV Protection Stats**: Live counter of MEV attacks prevented on payroll transactions
 
 ## 🔗 Sponsor Technology Integration
 
 ### Arcology Network - Parallel Execution Engine
-- **Usage**: Core parallel execution infrastructure enabling concurrent trade collection
+- **Usage**: Core parallel execution infrastructure enabling concurrent payroll processing
 - **Integration**: 
-  - **Netted AMM Contract**: Main contract leveraging Arcology's concurrent execution capabilities
-  - **Thread-Safe Containers**: `HashU256Map` and `SwapRequestStore` for parallel trade storage
-  - **Multiprocess Execution**: 20 parallel threads collecting trades simultaneously
-  - **Deferred Execution**: `Runtime.defer()` for atomic batch processing at block end
+  - **NettedSwapPayroll Contract**: Main contract leveraging Arcology's concurrent execution capabilities
+  - **Thread-Safe Containers**: `U256Cumulative` and concurrent arrays for parallel payroll storage
+  - **Multiprocess Execution**: 100 parallel processors handling payroll transactions simultaneously
+  - **Batch Processing**: `processBatchPayrollSwaps()` for atomic payroll execution
 - **Technical Innovation**: 
-  - First DEX to use parallel execution for trade netting (impossible on Ethereum)
-  - Concurrent data structures preventing race conditions during trade collection
-  - Atomic batch execution eliminating MEV attack windows
-  - Thread-safe aggregation enabling real-time netting calculations
-- **Benefit**: Protocol-level MEV elimination through parallel trade collection and internal netting
+  - First payroll system to use parallel execution for transaction netting (impossible on Ethereum)
+  - Concurrent data structures preventing race conditions during payroll collection
+  - Atomic batch execution eliminating MEV attack windows on payroll transactions
+  - Thread-safe aggregation enabling real-time payroll netting calculations
+- **Benefit**: Protocol-level MEV elimination through parallel payroll collection and internal netting
 
 ### Pyth Network - Real-time Price Feeds
 - **Usage**: Accurate price discovery for fair internal matching
